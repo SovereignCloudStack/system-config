@@ -1,0 +1,9 @@
+- hosts: "!disabled"
+  name: "Base: set up common environment on all hosts"
+  become: true
+  tasks:
+    - include_role: name=base/users
+    - include_role: name=base/repos
+    - include_role: name=base/server
+    - include_role: name=base/timezone
+    - include_role: name=base/unbound

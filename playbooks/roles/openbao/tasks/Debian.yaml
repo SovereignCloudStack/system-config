@@ -1,0 +1,20 @@
+---
+- name: "Download package"
+  ansible.builtin.get_url:
+    url: "{{ package_url }}"
+    dest: "/tmp/openbao.deb"
+    checksum: "{{ package_checksum | default(omit) }}"
+
+- name: "Install OpenBAO"
+  become: true
+  ansible.builtin.apt:
+    deb: "/tmp/openbao.deb"
+    state: "present"
+
+
+#- name: Install vault
+#  become: yes
+#  apt:
+#    name: vault
+#    state: present
+#    update_cache: yes

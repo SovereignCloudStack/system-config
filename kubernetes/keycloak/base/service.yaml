@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+spec:
+  ports:
+    - name: http
+      appProtocol: http
+      port: 80
+      targetPort: http
+      nodePort: null
+    - name: https
+      appProtocol: https
+      port: 443
+      targetPort: https
+      nodePort: null
+  selector:
+    app.kubernetes.io/app: "keycloak"
+    app.kubernetes.io/component: keycloak
+  type: "ClusterIP"

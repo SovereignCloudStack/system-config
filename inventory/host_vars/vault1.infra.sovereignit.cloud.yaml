@@ -1,0 +1,70 @@
+---
+image: "Debian 12"
+flavor: "SCS-4V-16"
+security_groups: ["default", "vault"]
+nics:
+  - fixed_ip: "192.168.2.171"
+    net-name: "community-int2"
+root_volume_size: 20
+auto_ip: false
+
+data_volumes:
+  - name: "var"
+    size: 100
+  - name: "home"
+    size: 10
+  - name: "opt"
+    size: 100
+
+userdata: |
+  #cloud-config
+  disk_setup:
+    /dev/sdb:
+      table_type: 'mbr'
+      layout:
+        - 100
+    /dev/sdc:
+      table_type: 'mbr'
+      layout:
+        - 100
+    /dev/sdd:
+      table_type: 'mbr'
+      layout:
+        - 100
+  fs_setup:
+    - label: var
+      filesystem: ext4
+      device: '/dev/sdb1'
+    - label: opt
+      filesystem: ext4
+      device: '/dev/sdc1'
+    - label: home
+      filesystem: ext4
+      device: '/dev/sdd1'
+  mounts:
+    - [ "LABEL=home", "/home", "auto", "defaults", "0", "2" ]
+  groups:
+    - automation
+  users:
+    - default
+    - name: automation
+      primary_group: automation
+      ssh_authorized_keys:
+        - "{{ ssh_public_key }}"
+      sudo: ALL=(ALL) NOPASSWD:ALL
+  runcmd:
+    - mkdir /mnt/sdb && mount /dev/sdb1 /mnt/sdb
+    - cp -a /var/* /mnt/sdb/
+    - umount /mnt/sdb && rmdir /mnt/sdb
+    - echo "LABEL=var   /var   auto   defaults,comment=cloudconfig  0 2" >> /etc/fstab
+    - echo "LABEL=opt   /opt   auto   defaults  0 2" >> /etc/fstab
+    - mount /var
+    - mkdir -p /opt
+    - mount /opt
+
+ssl_certs:
+  vault:
+    - "vault1.infra.sovereignit.cloud"
+vault_cert: "vault"
+
+firewalld_extra_ports_enable: ['8200/tcp', '8201/tcp']

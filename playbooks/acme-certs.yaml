@@ -1,0 +1,29 @@
+---
+# Generate SSL certificates as requested by hosts
+#
+# For each server in the ssl_certs group certificate as defined
+# by hostvars ssl_cert are requested, on the controller host
+# DNS entries for verification are being added, certs are
+# verified and finally the text records are being deleted.
+#
+- name: "Create necessary certificate requests"
+  hosts: ssl_certs:!disabled
+  become: true
+  roles:
+    - acme_request_certs
+
+- name: "Install DNS txt verification records"
+  hosts: localhost
+  roles:
+    - acme_install_txt_records
+
+- name: "Verify certificates"
+  hosts: ssl_certs:!disabled
+  become: true
+  roles:
+    - acme_create_certs
+
+- name: "Delete DNS txt verification records"
+  hosts: localhost
+  roles:
+    - acme_drop_txt_records

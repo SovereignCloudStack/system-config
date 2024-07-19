@@ -1,0 +1,20 @@
+---
+all:
+  hosts:
+    vault1.infra.sovereignit.cloud:
+      ansible_host: 31.172.116.158
+      ansible_user: automation
+      location:
+        cloud: "wavestack_community"
+        ansible_host: "192.168.2.171"
+        az: "muc5-b"
+vault:
+  hosts:
+    vault1.infra.sovereignit.cloud:
+ssl_certs:
+  hosts:
+    vault1.infra.sovereignit.cloud:
+    localhost:
+#cloud_launcher:
+#  hosts:
+#    localhost:

@@ -1,0 +1,22 @@
+- name: Configure apt retries
+  ansible.builtin.copy:
+    mode: 0444
+    src: 80retry
+    dest: /etc/apt/apt.conf.d/80retry
+
+- name: Disable apt translations
+  ansible.builtin.copy:
+    mode: 0444
+    src: 90no-translations
+    dest: /etc/apt/apt.conf.d/90no-translations
+
+- name: Make /etc/apt/sources.list.d
+  ansible.builtin.file:
+    state: "directory"
+    path: "/etc/apt/sources.list.d"
+
+- name: Replace sources.list file
+  ansible.builtin.copy:
+    src: 'sources.list.{{ ansible_facts.lsb.codename }}.{{ ansible_facts.architecture }}'
+    dest: "/etc/apt/sources.list.d/{{ ansible_facts.lsb.codename }}.list"
+  notify: Update apt cache

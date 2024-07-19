@@ -1,0 +1,130 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zuul-executor
+  labels:
+    app.kubernetes.io/name: "zuul"
+    app.kubernetes.io/part-of: "zuul"
+    app.kubernetes.io/component: "zuul-executor"
+spec:
+  replicas: 1
+  serviceName: "zuul-executor"
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "zuul"
+      app.kubernetes.io/part-of: "zuul"
+      app.kubernetes.io/component: "zuul-executor"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "zuul"
+        app.kubernetes.io/part-of: "zuul"
+        app.kubernetes.io/component: "zuul-executor"
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: "app.kubernetes.io/name"
+                      operator: In
+                      values:
+                        - "zuul"
+                    - key: "app.kubernetes.io/component"
+                      operator: In
+                      values:
+                        - "zuul-executor"
+                topologyKey: "kubernetes.io/hostname"
+
+      containers:
+        - name: "zuul"
+          image: "zuul/zuul-executor"
+          args: ["/usr/local/bin/zuul-executor", "-f", "-d"]
+          env:
+            - name: "ZUUL_EXECUTOR_SIGTERM_GRACEFUL"
+              value: "1"
+
+          lifecycle:
+            preStop:
+              exec:
+                command: [
+                  "/usr/local/bin/zuul-executor", "graceful"
+                ]
+
+          ports:
+            - containerPort: 7900
+              name: "logs"
+              protocol: "TCP"
+            - containerPort: 9091
+              name: "prometheus"
+              protocol: "TCP"
+
+                #          readinessProbe:
+                #            httpGet:
+                #              path: "/health/ready"
+                #              port: "prometheus"
+                #            failureThreshold: 20
+                #            periodSeconds: 10
+                #          livenessProbe:
+                #            httpGet:
+                #              path: "/health/live"
+                #              port: "prometheus"
+                #            initialDelaySeconds: 120
+                #            failureThreshold: 10
+                #            periodSeconds: 5
+                #            timeoutSeconds: 5
+
+          resources:
+            limits:
+              memory: "8G"
+            requests:
+              cpu: "500m"
+              memory: "8G"
+
+          securityContext:
+            privileged: true
+
+          volumeMounts:
+            - name: "zuul-config"
+              mountPath: "/etc/zuul"
+              readOnly: true
+            - name: "zookeeper-client-tls"
+              mountPath: "/tls/client"
+              readOnly: true
+            - name: "zuul-config-data"
+              mountPath: "/etc/zuul-config"
+            - name: "zuul-var"
+              mountPath: "/var/lib/zuul"
+            - name: "zuul-vars"
+              mountPath: "/var/run/zuul/vars"
+            - name: "zuul-trusted-ro"
+              mountPath: "/var/run/zuul/trusted-ro"
+              readOnly: true
+
+      serviceAccountName: "zuul"
+      terminationGracePeriodSeconds: 120
+      volumes:
+        - name: "zuul-config"
+          secret:
+            secretName: "zuul-config"
+
+        - name: "zookeeper-client-tls"
+          secret:
+            secretName: "zookeeper-client-tls"
+
+        - name: "zuul-config-data"
+          persistentVolumeClaim:
+            claimName: "zuul-config"
+
+        - name: "zuul-vars"
+          configMap:
+            name: "zuul-executor-vars"
+
+        - name: "zuul-trusted-ro"
+          emptyDir: {}
+
+        - name: "zuul-var"
+          emptyDir: {}

@@ -1,0 +1,5 @@
+---
+package_url: "https://github.com/openbao/openbao/releases/download/v2.0.0/bao_2.0.0_linux_amd64.deb"
+package_checksum: "sha256:54976b08a0271b7b9ebe36f2b5f21cc0e6c44973656de179f172930cdf46e8c5"
+packages:
+  - "unzip"

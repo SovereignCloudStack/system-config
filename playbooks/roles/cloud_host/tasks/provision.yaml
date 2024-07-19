@@ -1,0 +1,43 @@
+- name: "Ensure keypair exists for {{ host }}"
+  openstack.cloud.keypair:
+    state: "present"
+    cloud: "{{ cloud }}"
+    name: "bridge"
+    public_key: "{{ ssh_public_key }}"
+
+- name: "Create data disk if requested for {{ host }}"
+  openstack.cloud.volume:
+    state: "present"
+    cloud: "{{ cloud }}"
+    name: "{{ hostvars[host].inventory_hostname }}-{{ item.name }}"
+    size: "{{ item.size }}"
+    availability_zone: "{{ hostvars[host].location.az }}"
+    volume_type: "{{ item.type | default(omit) }}"
+    wait: true
+  register: data_volumes_result
+  when: hostvars[host].data_volumes is defined
+  loop: "{{ hostvars[host].data_volumes }}"
+
+- name: "Construct data_volumes_idlist from result"
+  include_tasks: construct_volumes_idlist.yaml
+  when: data_volumes_result.changed == true
+
+- name: "Provision server {{ hostvars[host].inventory_hostname }}"
+  openstack.cloud.server:
+    state: "present"
+    cloud: "{{ cloud }}"
+    name: "{{ hostvars[host].inventory_hostname }}"
+    flavor: "{{ hostvars[host].flavor }}"
+    key_name: "bridge"
+    availability_zone: "{{ hostvars[host].location.az }}"
+    security_groups: "{{ hostvars[host].security_groups }}"
+    timeout: 600
+    nics: "{{ hostvars[host].nics }}"
+    boot_from_volume: true
+    volume_size: "{{ hostvars[host].root_volume_size | default(omit) }}"
+    image: "{{ hostvars[host].image }}"
+    terminate_volume: true
+    delete_fip: true
+    auto_ip: "{{ hostvars[host].auto_ip | default(omit) }}"
+    volumes:  "{{ data_volumes_idlist | default(omit) }}"
+    userdata: "{{ hostvars[host].userdata  | default(omit) }}"

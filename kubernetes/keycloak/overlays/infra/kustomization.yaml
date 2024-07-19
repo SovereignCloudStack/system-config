@@ -1,0 +1,42 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: keycloak
+
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/instance: infra
+
+images:
+  - name: keycloak/keycloak
+    newName: quay.io/keycloak/keycloak
+    newTag: 25.0.2
+
+resources:
+  - pgsql-cloudnative.yaml
+  - ../../base
+
+patches:
+  # Patching web
+  - path: patch-ingress.yaml
+    target:
+      group: networking.k8s.io
+      kind: Ingress
+      name: keycloak
+      version: v1
+
+  - path: patch-statefulset.yaml
+    target:
+      version: v1
+      kind: StatefulSet
+      name: keycloak
+
+configMapGenerator:
+  - name: keycloak-config
+    behavior: "merge"
+    literals:
+      - KC_DB=postgres
+      - KC_HOSTNAME=keycloak.infra.sovereignit.cloud
+      - JAVA_OPTS_APPEND=-Djgroups.dns.query=keycloak-headless.keycloak.svc.cluster.local

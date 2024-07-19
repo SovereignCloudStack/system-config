@@ -1,0 +1,53 @@
+---
+ssh_public_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFnK86rxwHDN2B/QZOs0RNhlO4LLHjjpkF3l+QsgvfiS gtema@fedora"
+
+ansible_python_interpreter: /usr/bin/python3
+silence_synchronize: true
+
+distro_lookup_path:
+  - "{{ ansible_facts.distribution }}.{{ ansible_facts.lsb.codename|default() }}.{{ ansible_facts.architecture }}.yaml"
+  - "{{ ansible_facts.distribution }}.{{ ansible_facts.lsb.codename|default() }}.yaml"
+  - "{{ ansible_facts.distribution }}.{{ ansible_facts.architecture }}.yaml"
+  - "{{ ansible_facts.distribution }}.yaml"
+  - "{{ ansible_facts.os_family }}.yaml"
+  - default.yaml
+
+iptables_base_allowed_hosts: []
+iptables_extra_allowed_hosts: []
+iptables_allowed_hosts: "{{ iptables_base_allowed_hosts + iptables_extra_allowed_hosts }}"
+
+iptables_base_allowed_groups: []
+iptables_extra_allowed_groups: []
+iptables_allowed_groups: "{{ iptables_base_allowed_groups + iptables_extra_allowed_groups }}"
+
+iptables_base_public_tcp_ports: []
+iptables_extra_public_tcp_ports: []
+firewalld_base_ports_enable: []
+firewalld_extra_ports_enable: []
+firewalld_base_services_enable: ['ssh']
+firewalld_extra_services_enable: []
+# iptables_test_public_tcp_ports is here only to allow the test
+# framework to inject an iptables rule to allow zuul console
+# streaming.  Do not use it otherwise.
+firewalld_ports_enable: "{{ firewalld_test_ports_enable|default([]) + firewalld_base_ports_enable + firewalld_extra_ports_enable }}"
+firewalld_services_enable: "{{ firewalld_base_services_enable + firewalld_extra_services_enable }}"
+
+iptables_base_public_udp_ports: []
+iptables_extra_public_udp_ports: []
+iptables_public_udp_ports: "{{ iptables_base_public_udp_ports + iptables_extra_public_udp_ports }}"
+
+unbound_forward_zones: []
+
+all_users:
+  gtema:
+    comment: Artem Goncharov
+    uid: 2000
+    gid: 2000
+    key: |
+      ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFnK86rxwHDN2B/QZOs0RNhlO4LLHjjpkF3l+QsgvfiS gtema@tuxedo
+
+base_users:
+  - gtema
+
+disabled_distro_cloud_users:
+  - debian

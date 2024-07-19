@@ -1,0 +1,120 @@
+- name: Install base packages
+  ansible.builtin.package:
+    state: present
+    name: "{{ base_packages }}"
+  when: "ansible_facts.pkg_mgr != 'atomic_container'"
+
+- name: Install fallback packages
+  ansible.builtin.package:
+    state: "present"
+    name: "{{ item }}"
+  ignore_errors: true
+  loop:
+    - redhat-lsb-core
+  when: "ansible_facts.pkg_mgr != 'atomic_container'"
+
+- name: Include OS-specific variables
+  include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files: "{{ distro_lookup_path }}"
+      paths:
+        - 'vars'
+
+- name: Install distro specific packages
+  ansible.builtin.package:
+    state: present
+    name: "{{ distro_packages }}"
+  when: "ansible_facts.pkg_mgr != 'atomic_container'"
+
+- name: Increase syslog message size in order to capture python tracebacks
+  copy:
+    content: '$MaxMessageSize 6k'
+    dest: /etc/rsyslog.d/99-maxsize.conf
+    mode: 0644
+  when: "ansible_facts.pkg_mgr != 'atomic_container'"
+  notify: Restart rsyslog
+
+- name: Deploy SystemConfig logrotate config
+  ansible.builtin.template:
+    dest: "/etc/logrotate.d/1system-config"
+    src: "logrotate.j2"
+  notify: Restart logrotate
+
+- name: Ensure logrotate.timer is running
+  ansible.builtin.service:
+    name: logrotate.timer
+    enabled: yes
+    state: started
+  ignore_errors: true
+
+- name: Ensure rsyslog is running
+  ansible.builtin.service:
+    name: rsyslog
+    enabled: yes
+    state: started
+  when: "ansible_facts.pkg_mgr != 'atomic_container'"
+
+  # # TODO: remove this once we are sure automation user is properly deployed
+  #
+  # - name: Set ssh key for management
+  #   ansible.builtin.authorized_key:
+  #     state: present
+  #     user: "{{ ansible_user }}"
+  #     exclusive: "{{ bastion_key_exclusive }}"
+  #     key: "{{ bastion_public_key }}"
+  #     key_options: |
+  #       from="{{ bastion_ipv4 }},{{ bastion_ipv6 }},localhost"
+  #   when: "ansible_user is defined"
+
+# - name: Check presence of /etc/ssh/sshd_config.d directory
+#   ansible.builtin.stat:
+#     path: /etc/ssh/sshd_config.d/
+#   register: sshd_config_dir
+
+- name: Install sshd config
+  ansible.builtin.template:
+    src: "sshd_config.j2"
+    dest: "/etc/ssh/sshd_config"
+    owner: "root"
+    group: "root"
+    mode: 0444
+    validate: "/usr/sbin/sshd -t -f %s"
+  # when: not sshd_config_dir.stat.exists
+  when: "ansible_facts.pkg_mgr != 'atomic_container'"
+  notify: Restart ssh
+
+# #Some OS want us to place content under /etc/ssh/sshd_config.d/*.conf
+# but then we seem not to have possibility to allow root login from bridge
+# - name: Install sshd part config
+#   ansible.builtin.template:
+#     src: "90-eco.conf.j2"
+#     dest: "/etc/ssh/sshd_config.d/90-eco.conf"
+#     owner: "root"
+#     group: "root"
+#     mode: 0444
+#     validate: "/usr/sbin/sshd -t -f %s"
+#   when: sshd_config_dir.stat.isdir is defined and sshd_config_dir.stat.isdir
+#   notify: Restart ssh
+
+- name: Disable byobu
+  file:
+    path: /etc/profile.d/Z98-byobu.sh
+    state: absent
+
+- name: Setup RFC3339 bash history timestamps
+  copy:
+    mode: 0644
+    src: bash-history.sh
+    dest: /etc/profile.d/bash-history.sh
+
+- name: Ensure root cache directory
+  file:
+    path: /root/.cache
+    state: directory
+    mode: 0700
+
+- name: Include OS-specific tasks
+  include_tasks: "{{ lookup('first_found', file_list) }}"
+  vars:
+    file_list: "{{ distro_lookup_path }}"

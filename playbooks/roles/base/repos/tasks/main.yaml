@@ -1,0 +1,11 @@
+- name: Set up additional repos
+  ansible.builtin.include_tasks: "{{ item }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_facts.distribution }}.yaml"
+        - "{{ ansible_facts.os_family }}.yaml"
+  loop: "{{ query('first_found', params, errors='ignore') }}"
+  when: "ansible_facts.pkg_mgr != 'atomic_container'"
+
+- ansible.builtin.meta: flush_handlers

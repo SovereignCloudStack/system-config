@@ -1,0 +1,12 @@
+state: "present"
+
+vault_storage_path: "/opt/vault/data"
+vault_plugin_path: "/etc/openbao.d/plugins"
+vault_config_path: "/etc/openbao"
+vault_config_name: "openbao.hcl"
+vault_enable_ui: false
+vault_service_name: "openbao"
+vault_owner: "openbao"
+vault_group: "openbao"
+
+vault_plugins: []

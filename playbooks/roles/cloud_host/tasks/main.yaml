@@ -1,0 +1,10 @@
+---
+- name: "Set cloud env"
+  set_fact:
+    cloud: "{{ hostvars[host].location.cloud }}"
+
+- include_tasks: "provision.yaml"
+  when: "state != 'absent'"
+
+- include_tasks: "destroy.yaml"
+  when: "state == 'absent'"

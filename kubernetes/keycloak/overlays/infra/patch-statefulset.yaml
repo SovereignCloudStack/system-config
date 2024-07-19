@@ -1,0 +1,16 @@
+---
+apiVersion: apps/v1
+kind: dummy
+metadata:
+  name: keycloak
+spec:
+  template:
+    spec:
+      containers:
+        - name: keycloak
+          env:
+            - name: KC_DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: "keycloak-db-app"
+                  key: jdbc-uri

@@ -1,0 +1,42 @@
+- name: Include OS-specific tasks
+  ansible.builtin.include_tasks: "{{ item }}"
+  vars:
+    params:
+      files: "{{ distro_lookup_path }}"
+  loop: "{{ query('first_found', params, errors='ignore') }}"
+
+- name: Install unbound
+  ansible.builtin.package:
+    state: present
+    name: unbound
+  when: "ansible_facts.pkg_mgr != 'atomic_container'"
+
+- name: Write dhclient config files
+  ansible.builtin.include_tasks: dhclient.yaml
+  loop:
+    - /etc/dhcp/dhclient.conf
+    - /etc/dhcp/dhclient-eth0.conf
+
+- name: Write resolv.conf
+  ansible.builtin.copy:
+    src: resolv.conf
+    dest: /etc/resolv.conf
+    mode: 0444
+
+#- name: Write unbound conf part file
+#  ansible.builtin.template:
+#    src: "unbound.confd.conf.j2"
+#    dest: "{{ unbound_confd_path | default('/etc/unbound/conf.d') }}/{{ cfg.name }}.conf"
+#    mode: "0644"
+#  loop: "{{ unbound_conf_parts | default([]) }}"
+#  loop_control:
+#    loop_var: "cfg"
+#  notify:
+#    - Restart unbound
+#  register: result
+
+- name: Enable unbound
+  ansible.builtin.service:
+    name: "unbound"
+    enabled: true
+    state: "started"
