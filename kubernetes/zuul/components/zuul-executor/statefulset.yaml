@@ -39,6 +39,32 @@ spec:
                         - "zuul-executor"
                 topologyKey: "kubernetes.io/hostname"
 
+      initContainers:
+
+        - name: "git-sync-init"
+          image: "git-sync"
+          args:
+            - --depth=1
+            - --link=current
+            - --root=/git
+            - --one-time
+          env:
+            - name: "GITSYNC_REPO"
+              valueFrom:
+                configMapKeyRef:
+                  name: "zuul-instance-config"
+                  key: "ZUUL_CONFIG_REPO"
+          resources:
+            limits:
+              memory: "64Mi"
+            requests:
+              cpu: "10m"
+              memory: "32Mi"
+
+          volumeMounts:
+            - name: "zuul-config-data"
+              mountPath: "/git"
+
       containers:
         - name: "zuul"
           image: "zuul/zuul-executor"
@@ -82,7 +108,7 @@ spec:
               memory: "8G"
             requests:
               cpu: "500m"
-              memory: "8G"
+              memory: "4G"
 
           securityContext:
             privileged: true
@@ -96,6 +122,8 @@ spec:
               readOnly: true
             - name: "zuul-config-data"
               mountPath: "/etc/zuul-config"
+              readOnly: true
+              subPath: "current"
             - name: "zuul-var"
               mountPath: "/var/lib/zuul"
             - name: "zuul-vars"
@@ -103,6 +131,30 @@ spec:
             - name: "zuul-trusted-ro"
               mountPath: "/var/run/zuul/trusted-ro"
               readOnly: true
+
+        - name: "git-sync"
+          image: "git-sync"
+          args:
+            - --depth=1
+            - --period=60s
+            - --link=current
+            - --root=/git
+          env:
+            - name: "GITSYNC_REPO"
+              valueFrom:
+                configMapKeyRef:
+                  name: "zuul-instance-config"
+                  key: "ZUUL_CONFIG_REPO"
+          resources:
+            limits:
+              memory: "64Mi"
+            requests:
+              cpu: "10m"
+              memory: "32Mi"
+
+          volumeMounts:
+            - name: "zuul-config-data"
+              mountPath: "/git"
 
       serviceAccountName: "zuul"
       terminationGracePeriodSeconds: 120
@@ -116,8 +168,7 @@ spec:
             secretName: "zookeeper-client-tls"
 
         - name: "zuul-config-data"
-          persistentVolumeClaim:
-            claimName: "zuul-config"
+          emptyDir: {}
 
         - name: "zuul-vars"
           configMap:

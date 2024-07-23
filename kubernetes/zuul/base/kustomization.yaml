@@ -5,11 +5,11 @@ kind: Kustomization
 components:
   - ../components/ca
   - ../components/zookeeper
-  - ../components/zuul-config
-  #  - ../components/zuul-executor
-  #  - ../components/zuul-scheduler
+  - ../components/zuul-executor
+  #- ../components/zuul-merger
+  - ../components/zuul-scheduler
   - ../components/zuul-web
-  #  - ../components/nodepool-launcher
+  - ../components/nodepool-launcher
 
 configMapGenerator:
   - name: "zuul-instance-config"
@@ -18,13 +18,16 @@ configMapGenerator:
   - name: "zuul-executor-vars"
     literals: []
 
+images:
+  - name: "git-sync"
+    newName: "gcr.io/k8s-staging-git-sync/git-sync"
+    newTag: "v4.2.3"
+
 labels:
   - includeSelectors: true
     pairs:
       app.kubernetes.io/instance: "base"
       app.kubernetes.io/managed-by: "kustomize"
-
-# images:
 
 resources:
   - sa.yaml

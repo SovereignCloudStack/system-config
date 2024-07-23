@@ -68,7 +68,7 @@ spec:
               memory: "600Mi"
             requests:
               cpu: "50m"
-              memory: "600Mi"
+              memory: "200Mi"
 
           securityContext:
             runAsUser: 10001
@@ -83,6 +83,8 @@ spec:
               readOnly: true
             - name: "zuul-config-data"
               mountPath: "/etc/zuul-config"
+              readOnly: true
+              subPath: "current"
             - name: "zuul-var"
               mountPath: "/var/lib/zuul"
 
@@ -98,9 +100,11 @@ spec:
             secretName: "zookeeper-client-tls"
 
         - name: "zuul-config-data"
-          persistentVolumeClaim:
-            claimName: "zuul-config"
+          emptyDir: {}
 
         - name: "zuul-var"
           emptyDir: {}
+        - name: "tmp"
+          emptyDir: {}
+
   revisionHistoryLimit: 2

@@ -1,24 +1,23 @@
 apiVersion: v1
 kind: Config
-current-context: otcci
+current-context: zuul
 preferences: {}
 
 clusters:
-  - name: otcci
+  - name: zuul
     cluster:
-      server: "https://192.168.21.182:5443"
-      insecure-skip-tls-verify: true
+      server: "https://31.172.117.154:6443"
 
 contexts:
-  - name: otcci
+  - name: zuul
     context:
-      cluster: otcci
-      user: otcci-admin
+      cluster: zuul
+      user: zuul-admin
 
 users:
-  - name: otcci-admin
+  - name: zuul-admin
     user:
-{{- with secret "secret/kubernetes/otcci_k8s" }}
+{{- with secret "secret/kubernetes/zuul_k8s" }}
       client-certificate-data: "{{ base64Encode .Data.data.client_crt }}"
       client-key-data: "{{ base64Encode .Data.data.client_key }}"
 {{- end }}

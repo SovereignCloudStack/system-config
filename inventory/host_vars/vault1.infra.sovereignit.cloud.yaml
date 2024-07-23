@@ -64,6 +64,7 @@ userdata: |
 
 ssl_certs:
   vault:
+    - "vault.infra.sovereignit.cloud"
     - "vault1.infra.sovereignit.cloud"
 vault_cert: "vault"
 

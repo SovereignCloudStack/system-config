@@ -6,9 +6,8 @@ namespace: zuul-ci
 
 components:
   - ../../components/zuul-client
-  #  - ../../components/zuul-merger
-  #  - ../../components/nodepool-builder
-  #  - ../../components/restarter
+  - ../../components/zuul-merger
+  - ../../components/nodepool-builder
 
 configMapGenerator:
   - name: "vault-agent-config"
@@ -31,13 +30,9 @@ labels:
       app.kubernetes.io/instance: zuul-ci
 
 images:
-  #  - name: "busybox"
-  #    newName: "quay.io/opentelekomcloud/busybox"
-  #    newTag: "1.36.0-musl"
-
   - name: "hashicorp/vault"
-    newName: "quay.io/opentelekomcloud/vault"
-    newTag: "change_783_latest"
+    newName: "quay.io/openbao/openbao"
+    newTag: "2.0.0"
 
   - name: "zuul/zuul-executor"
     newName: "quay.io/zuul-ci/zuul-executor"
@@ -63,6 +58,11 @@ images:
     newName: "quay.io/zuul-ci/nodepool-launcher"
     newTag: "10.0.0"
 
+  - name: "git-sync"
+    newName: "gcr.io/k8s-staging-git-sync/git-sync"
+    newTag: "v4.2.3"
+
+
 patches:
   # Patch zookeeper (storage class, size and count)
   - patch: |-
@@ -83,16 +83,6 @@ patches:
       name: zookeeper
       version: v1
 
-  # Patch PVC storage class
-  - patch: |-
-      - op: replace
-        path: /spec/storageClassName
-        value: "csi-cinder-sc-retain"
-    target:
-      kind: "PersistentVolumeClaim"
-      name: "zuul-config"
-      version: "v1"
-
   # Path zuul components (replace config and enable vault)
   - patch: |-
       - op: replace
@@ -106,21 +96,21 @@ patches:
       group: apps
       version: v1
 
-  #  - path: patch-zuul.yaml
-  #    target:
-  #      labelSelector: "app.kubernetes.io/name=zuul,app.kubernetes.io/component in (zuul-scheduler,zuul-executor,zuul-merger,zuul-web,zuul-client)"
-  #      group: apps
-  #      version: v1
-
-  # Patching zuul-executor count
-  - patch: |-
-      - op: replace
-        path: /spec/replicas
-        value: 0
+  - path: patch-zuul.yaml
     target:
-      labelSelector: "app.kubernetes.io/name=zuul,app.kubernetes.io/component=zuul-executor"
+      labelSelector: "app.kubernetes.io/name=zuul,app.kubernetes.io/component in (zuul-scheduler,zuul-executor,zuul-merger,zuul-web,zuul-client)"
       group: apps
       version: v1
+
+      ## Patching zuul-executor count
+      #- patch: |-
+      #    - op: replace
+      #      path: /spec/replicas
+      #      value: 1
+      #  target:
+      #    labelSelector: "app.kubernetes.io/name=zuul,app.kubernetes.io/component=zuul-executor"
+      #    group: apps
+      #    version: v1
 
   # Add zuul-executor base job vault token
   - path: patch-zuul-executor.yaml
@@ -138,6 +128,16 @@ patches:
           emptyDir: {}
     target:
       labelSelector: "app.kubernetes.io/name=zuul,app.kubernetes.io/component in (nodepool-launcher,nodepool-builder)"
+      group: apps
+      version: v1
+
+  # Set storageClassName for nodepool-builder
+  - patch: |-
+      - op: add
+        path: /spec/volumeClaimTemplates/0/spec/storageClassName
+        value: "csi-cinder-sc-delete"
+    target:
+      labelSelector: "app.kubernetes.io/name=zuul,app.kubernetes.io/component=nodepool-builder"
       group: apps
       version: v1
 

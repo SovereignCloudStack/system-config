@@ -1,7 +1,7 @@
 pid_file = "/home/vault/.pid"
 "auto_auth" = {
     "method" = {
-        "mount_path" = "auth/kubernetes_otcci"
+        "mount_path" = "auth/kubernetes_wavestack_zuul"
         "config" = {
           "role" = "zuul"
         }
@@ -15,7 +15,16 @@ pid_file = "/home/vault/.pid"
 }
 
 cache {
-    use_auto_auth_token = true
+}
+
+api_proxy {
+  use_auto_auth_token = true
+}
+
+# Vault agent requires at least one template or listener is present. Add a socket
+listener "unix" {
+    address = "/home/vault/vault_agent.socket"
+    tls_disable = true
 }
 
 template {

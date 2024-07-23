@@ -14,39 +14,11 @@ cache:
     port: 5
     floating-ip: 5
 clouds:
-  otcci-pool1:
+  gx-scs:
+    auth_type: v3applicationcredential
     auth:
-{{- with secret "secret/clouds/otcci_nodepool_pool1" }}
-{{- with secret (printf "secret/%s" .Data.data.user_secret_name) }}
+{{- with secret "secret/clouds/gx_scs_nodepool_pool1" }}
        auth_url: "{{ .Data.data.auth_url }}"
-       user_domain_name: "{{ .Data.data.user_domain_name }}"
-       username: "{{ .Data.data.username }}"
-       password: "{{ .Data.data.password }}"
+       application_credential_id: "{{ .Data.data.application_credential_id }}"
+       application_credential_secret: "{{ .Data.data.application_credential_secret }}"
 {{- end }}
-       project_name: "{{ .Data.data.project_name }}"
-{{- end }}
-    private: true
-  otcci-pool2:
-    auth:
-{{- with secret "secret/clouds/otcci_nodepool_pool2" }}
-{{- with secret (printf "secret/%s" .Data.data.user_secret_name) }}
-       auth_url: "{{ .Data.data.auth_url }}"
-       user_domain_name: "{{ .Data.data.user_domain_name }}"
-       username: "{{ .Data.data.username }}"
-       password: "{{ .Data.data.password }}"
-{{- end }}
-       project_name: "{{ .Data.data.project_name }}"
-{{- end }}
-    private: true
-  otcci-pool3:
-    auth:
-{{- with secret "secret/clouds/otcci_nodepool_pool3" }}
-{{- with secret (printf "secret/%s" .Data.data.user_secret_name) }}
-       auth_url: "{{ .Data.data.auth_url }}"
-       user_domain_name: "{{ .Data.data.user_domain_name }}"
-       username: "{{ .Data.data.username }}"
-       password: "{{ .Data.data.password }}"
-{{- end }}
-       project_name: "{{ .Data.data.project_name }}"
-{{- end }}
-    private: true

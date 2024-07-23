@@ -10,13 +10,13 @@ spec:
       containers:
         - name: "vault-agent"
           args:
-            - touch /home/vault/.vault-token && vault agent -config=/vault/configs/config-zuul.hcl
+            - touch /home/vault/.vault-token && bao agent -config=/vault/configs/config-zuul.hcl
           command:
             - "/bin/sh"
             - "-ec"
           env:
             - name: "VAULT_ADDR"
-              value: "https://vault-lb.eco.tsi-dev.otc-service.com:8200"
+              value: "https://vault.infra.sovereignit.cloud:8200"
             - name: "VAULT_LOG_LEVEL"
               value: "debug"
             - name: "VAULT_LOG_FORMAT"
@@ -33,10 +33,10 @@ spec:
             runAsUser: 10001
           resources:
             limits:
-              memory: 128Mi
+              memory: "256Mi"
             requests:
-              cpu: 5m
-              memory: 128Mi
+              cpu: "5m"
+              memory: "32Mi"
           volumeMounts:
             - mountPath: "/home/vault"
               name: "home-init"
@@ -50,18 +50,21 @@ spec:
               readOnly: true
             - mountPath: "/vault/configs"
               name: "vault-config"
+              readOnly: true
+            - mountPath: "/vault/db-secrets"
+              name: "db-secrets"
               readOnly: true
 
       initContainers:
         - name: "vault-agent-init"
           args:
-            - touch /home/vault/.vault-token && vault agent -config=/vault/configs/config-zuul.hcl -exit-after-auth=true
+            - touch /home/vault/.vault-token && bao agent -config=/vault/configs/config-zuul.hcl -exit-after-auth=true
           command:
             - "/bin/sh"
             - "-ec"
           env:
             - name: "VAULT_ADDR"
-              value: "https://vault-lb.eco.tsi-dev.otc-service.com:8200"
+              value: "https://vault.infra.sovereignit.cloud:8200"
             - name: "VAULT_LOG_LEVEL"
               value: "debug"
             - name: "VAULT_LOG_FORMAT"
@@ -78,10 +81,10 @@ spec:
             runAsUser: 10001
           resources:
             limits:
-              memory: "64Mi"
+              memory: "256Mi"
             requests:
               cpu: "5m"
-              memory: "64Mi"
+              memory: "32Mi"
           volumeMounts:
             - mountPath: "/home/vault"
               name: "home-init"
@@ -95,6 +98,9 @@ spec:
               readOnly: true
             - mountPath: "/vault/configs"
               name: "vault-config"
+              readOnly: true
+            - mountPath: "/vault/db-secrets"
+              name: "db-secrets"
               readOnly: true
 
       volumes:
@@ -129,3 +135,8 @@ spec:
           secret:
             defaultMode: 420
             secretName: "vault-config-zuul"
+        - name: "db-secrets"
+          secret:
+            secretName: "zuul-db-app"
+
+

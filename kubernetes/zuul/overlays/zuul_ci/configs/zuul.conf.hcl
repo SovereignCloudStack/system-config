@@ -6,8 +6,7 @@ tls_ca=/tls/client/ca.crt
 session_timeout=40
 
 [scheduler]
-#tenant_config=/etc/zuul-config/zuul/main.yaml
-tenant_config_script=/etc/zuul-config/tools/render_config.py
+tenant_config=/etc/zuul-config/current/zuul/main.yaml
 state_dir=/var/lib/zuul
 relative_priority=true
 prometheus_port=9091
@@ -46,7 +45,7 @@ variables=/var/run/zuul/vars/site-vars.yaml
 prometheus_port=9091
 
 [database]
-dburi=%(ZUUL_DB_URI)
+dburi=postgresql://{{ file "/vault/db-secrets/user" }}:{{ file "/vault/db-secrets/password" }}@{{ file "/vault/db-secrets/host" }}/{{ file "/vault/db-secrets/dbname" }}?sslmode=require
 
 [connection "github"]
 name=github
@@ -57,14 +56,20 @@ app_id={{ .Data.data.app_id }}
 {{- end }}
 app_key=/etc/zuul/connections/github.key
 
-[connection "opendev"]
+[connection "opendevorg"]
 name=opendev
 driver=git
 baseurl=https://opendev.org
 
+[statsd]
+{{- with secret "secret/zuul/connections/statsd" }}
+server={{ .Data.data.server }}
+port={{ .Data.data.port }}
+{{- end }}
+
 [auth "keycloak"]
 default=True
 driver=OpenIDConnect
-realm=eco
-issuer_id=https://keycloak.eco.tsi-dev.otc-service.com/realms/eco
+realm=master
+issuer_id=https://keycloak.infra.sovereignit.cloud/realms/master
 client_id=zuul

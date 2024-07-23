@@ -22,6 +22,43 @@ spec:
         app.kubernetes.io/part-of: "zuul"
         app.kubernetes.io/component: "nodepool-builder"
     spec:
+      initContainers:
+
+        - name: "git-sync-init"
+          image: "git-sync"
+          args:
+            - --depth=1
+            - --link=current
+            - --root=/git
+            - --one-time
+          env:
+            - name: "GITSYNC_REPO"
+              valueFrom:
+                configMapKeyRef:
+                  name: "zuul-instance-config"
+                  key: "ZUUL_CONFIG_REPO"
+          resources:
+            limits:
+              memory: "64Mi"
+            requests:
+              cpu: "10m"
+              memory: "32Mi"
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+
+          volumeMounts:
+            - name: "zuul-config-data"
+              mountPath: "/git"
+            - name: "tmp"
+              mountPath: "/tmp"
+              subPath: "git-sync"
+
       containers:
         - name: "nodepool"
           image: "zuul/nodepool-builder"
@@ -30,7 +67,7 @@ spec:
             - "-f"
             - "-d"
             - "-c"
-            - "/data/nodepool/nodepool.yaml"
+            - "/data/current/nodepool/nodepool.yaml"
 
           resources:
             limits:
@@ -67,6 +104,42 @@ spec:
 
             - name: "zuul-config-data"
               mountPath: "/data"
+              readOnly: true
+
+        - name: "git-sync"
+          image: "git-sync"
+          args:
+            - --depth=1
+            - --period=60s
+            - --link=current
+            - --root=/git
+          env:
+            - name: "GITSYNC_REPO"
+              valueFrom:
+                configMapKeyRef:
+                  name: "zuul-instance-config"
+                  key: "ZUUL_CONFIG_REPO"
+          resources:
+            limits:
+              memory: "64Mi"
+            requests:
+              cpu: "10m"
+              memory: "32Mi"
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+
+          volumeMounts:
+            - name: "zuul-config-data"
+              mountPath: "/git"
+            - name: "tmp"
+              mountPath: "/tmp"
+              subPath: "git-sync"
 
       serviceAccountName: "zuul"
       volumes:
@@ -92,16 +165,16 @@ spec:
             secretName: "zookeeper-client-tls"
 
         - name: "zuul-config-data"
-          persistentVolumeClaim:
-            claimName: "zuul-config"
+          emptyDir: {}
 
+        - name: "tmp"
+          emptyDir: {}
   volumeClaimTemplates:
     - metadata:
         name: "nodepool-images-dir"
       spec:
         accessModes:
           - "ReadWriteOnce"
-        storageClassName: "csi-disk"
         resources:
           requests:
             storage: "80G"

@@ -105,10 +105,11 @@ spec:
 
           resources:
             limits:
+              cpu: "0.5"
               memory: "2Gi"
             requests:
               cpu: "20m"
-              memory: "1Gi"
+              memory: "1584Mi"
 
           volumeMounts:
             - name: data
