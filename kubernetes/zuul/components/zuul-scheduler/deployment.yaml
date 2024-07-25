@@ -132,6 +132,9 @@ spec:
               mountPath: "/var/lib/zuul"
             - name: "zuul-var-run"
               mountPath: "/var/run/zuul"
+            - name: "tmp"
+              mountPath: "/tmp"
+              subPath: "zuul"
 
         - name: "git-sync"
           image: "git-sync"

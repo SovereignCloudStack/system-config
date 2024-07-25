@@ -88,6 +88,9 @@ spec:
             - name: "zuul-config-data"
               mountPath: "/etc/zuul-config"
               readOnly: true
+            - name: "tmp"
+              mountPath: "/tmp"
+              subPath: "zuul"
 
         - name: "git-sync"
           image: "git-sync"

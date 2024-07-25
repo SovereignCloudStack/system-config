@@ -6,7 +6,10 @@ preferences: {}
 clusters:
   - name: zuul
     cluster:
-      server: "https://31.172.117.154:6443"
+{{- with secret "secret/kubernetes/zuul_k8s" }}
+      server: "{{ .Data.data.server }}"
+      certificate-authority-data: "{{ .Data.data.ca }}"
+{{- end }}
 
 contexts:
   - name: zuul
@@ -18,6 +21,6 @@ users:
   - name: zuul-admin
     user:
 {{- with secret "secret/kubernetes/zuul_k8s" }}
-      client-certificate-data: "{{ base64Encode .Data.data.client_crt }}"
-      client-key-data: "{{ base64Encode .Data.data.client_key }}"
+      client-certificate-data: "{{ .Data.data.client_crt }}"
+      client-key-data: "{{ .Data.data.client_key }}"
 {{- end }}

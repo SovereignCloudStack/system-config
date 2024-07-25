@@ -73,6 +73,8 @@ spec:
             - name: "zookeeper-client-tls"
               mountPath: "/tls/client"
               readOnly: true
+            - name: "tmp"
+              mountPath: "/tmp"
 
       serviceAccountName: "zuul"
       volumes:
@@ -84,4 +86,6 @@ spec:
           secret:
             secretName: "zookeeper-client-tls"
 
+        - name: "tmp"
+          emptyDir: {}
   revisionHistoryLimit: 2

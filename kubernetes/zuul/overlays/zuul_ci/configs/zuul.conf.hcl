@@ -18,9 +18,9 @@ status_url=https://zuul.sovereignit.cloud
 root=https://zuul.sovereignit.cloud
 prometheus_port=9091
 
-[fingergw]
-port=9079
-user=zuul
+# [fingergw]
+# port=9079
+# user=zuul
 
 [keystore]
 {{- with secret "secret/zuul/keystore_password" }}
@@ -56,6 +56,15 @@ app_id={{ .Data.data.app_id }}
 {{- end }}
 app_key=/etc/zuul/connections/github.key
 
+[connection "githubzuulapp"]
+name=github
+driver=github
+{{- with secret "secret/zuul/connections/github" }}
+webhook_token={{ .Data.data.webhook_token }}
+app_id={{ .Data.data.app_id }}
+{{- end }}
+app_key=/etc/zuul/connections/github.key
+
 [connection "opendevorg"]
 name=opendev
 driver=git
@@ -66,6 +75,15 @@ baseurl=https://opendev.org
 server={{ .Data.data.server }}
 port={{ .Data.data.port }}
 {{- end }}
+
+# TODO(gtema): add the real one
+[connection "mqtt"]
+name=mqtt
+driver=mqtt
+server=mqtt-broker
+port=1883
+user=dummy
+password=dummy
 
 [auth "keycloak"]
 default=True

@@ -30,6 +30,10 @@ labels:
       app.kubernetes.io/instance: zuul-ci
 
 images:
+  - name: "busybox"
+    newName: "quay.io/prometheus/busybox"
+    newTag: "latest"
+
   - name: "hashicorp/vault"
     newName: "quay.io/openbao/openbao"
     newTag: "2.0.0"

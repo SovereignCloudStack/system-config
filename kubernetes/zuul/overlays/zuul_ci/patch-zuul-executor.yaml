@@ -11,6 +11,19 @@ metadata:
 spec:
   template:
     spec:
+      initContainers:
+        # Enable mtu discovery through sysctl since source/target nets may have different mtu
+        - name: init-sysctl
+          image: busybox
+          command:
+          - sysctl
+          - -w
+          - net.ipv4.tcp_mtu_probing=2
+          securityContext:
+            privileged: true
+            runAsUser: 0
+            runAsNonRoot: false
+
       containers:
         - name: "vault-agent-executor-base"
           args:
@@ -57,3 +70,7 @@ spec:
         - name: "home-vault-base"
           emptyDir:
             medium: "Memory"
+
+        - name: "zuul-ssh-config"
+          configMap:
+            name: "zuul-executor-ssh-config"
