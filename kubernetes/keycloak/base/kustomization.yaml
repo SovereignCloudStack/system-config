@@ -17,6 +17,8 @@ resources:
   - service.yaml
   - service-headless.yaml
   - ingress.yaml
+  - role.yaml
+  - rolebinding.yaml
 
 configMapGenerator:
   - name: keycloak-config
@@ -28,6 +30,8 @@ configMapGenerator:
       - KEYCLOAK_PRODUCTION=true
       - KC_HTTP_ENABLED=true
       - KC_ENABLE_HTTPS=true
+      - KC_HEALTH_ENABLED=true
+      - KC_HTTP_MANAGEMENT_PORT=9000
       - KEYCLOAK_HTTPS_PORT=8443
       - KC_HTTPS_CERTIFICATE_FILE=/etc/keycloak-certs/tls.crt
       - KC_HTTPS_CERTIFICATE_KEY_FILE=/etc/keycloak-certs/tls.key
@@ -37,3 +41,11 @@ configMapGenerator:
       - KC_LOG_LEVEL=DEBUG
       - QUARKUS_TRANSACTION_MANAGER_OBJECT_STORE_DIRECTORY=/tmp
       - KC_LOG_CONSOLE_COLOR=true
+      - JAVA_OPTS=
+        -XX:+UseContainerSupport
+        -Dkubeping_namespace=keycloak
+        -Dkubeping_label="keycloak-cluster=default"
+      - JAVA_OPTS_KC_HEAP=-XX:MaxHeapFreeRatio=30 -XX:MaxRAMPercentage=74.0
+  # - name: keycloak-ispn-config
+  #   files:
+  #     - config/cache-ispn-kubeping.xml

@@ -39,4 +39,4 @@ configMapGenerator:
     literals:
       - KC_DB=postgres
       - KC_HOSTNAME=keycloak.infra.sovereignit.cloud
-      - JAVA_OPTS_APPEND=-Djgroups.dns.query=keycloak-headless.keycloak.svc.cluster.local
+      - JAVA_OPTS_APPEND=-Djgroups.dns.query=keycloak-headless
