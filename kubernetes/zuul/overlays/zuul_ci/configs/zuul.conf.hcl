@@ -56,15 +56,6 @@ app_id={{ .Data.data.app_id }}
 {{- end }}
 app_key=/etc/zuul/connections/github.key
 
-[connection "githubzuulapp"]
-name=github
-driver=github
-{{- with secret "secret/zuul/connections/github" }}
-webhook_token={{ .Data.data.webhook_token }}
-app_id={{ .Data.data.app_id }}
-{{- end }}
-app_key=/etc/zuul/connections/github.key
-
 [connection "opendevorg"]
 name=opendev
 driver=git
