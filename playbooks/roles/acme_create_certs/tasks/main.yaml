@@ -19,7 +19,7 @@
 
 - name: Check vault user
   ansible.builtin.user:
-    name: "vault"
+    name: "openbao"
   register: "vault_user"
   when: "'vault' in group_names"
 
