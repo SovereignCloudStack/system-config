@@ -8,11 +8,13 @@ components:
   - ../../components/zuul-client
   - ../../components/zuul-merger
   - ../../components/nodepool-builder
+  - ../../components/zuul-backup
 
 configMapGenerator:
   - name: "vault-agent-config"
     files:
       - "config-zuul.hcl=configs/vault-agent/config-zuul.hcl"
+      - "config-zuul-backup.hcl=configs/vault-agent/config-zuul-backup.hcl"
       - "config-nodepool.hcl=configs/vault-agent/config-nodepool.hcl"
       - "executor-base-vault-agent.hcl=configs/vault-agent/executor-base-vault-agent.hcl"
   - name: "zuul-instance-config"
@@ -34,9 +36,16 @@ images:
     newName: "quay.io/prometheus/busybox"
     newTag: "latest"
 
+  - name: "git-sync"
+    newName: "registry.k8s.io/git-sync/git-sync"
+    newTag: "v4.2.4@sha256:827729ef28026c3aa73aecde6d1757a2e6967996cc64de43b39cf101ac28a9d1"
+
+  - name: "ghcr.io/gtema/openstack"
+    newTag: "0.6.4@sha256:1fcf0f6268dacd2b0934e7fe1395032d3abc4168895a6ebf9286657d64d6e1ae"
+
   - name: "hashicorp/vault"
     newName: "quay.io/openbao/openbao"
-    newTag: "2.0.0"
+    newTag: "2.0.0@sha256:5eedbca9922d85eca5e4bc68c11f968d245b4046641dd4173c1dcff7ae7091aa"
 
   - name: "zuul/zuul-executor"
     newName: "quay.io/zuul-ci/zuul-executor"
@@ -61,10 +70,6 @@ images:
   - name: "zuul/nodepool-launcher"
     newName: "quay.io/zuul-ci/nodepool-launcher"
     newTag: "10.0.0"
-
-  - name: "git-sync"
-    newName: "gcr.io/k8s-staging-git-sync/git-sync"
-    newTag: "v4.2.3"
 
 
 patches:
@@ -191,6 +196,10 @@ secretGenerator:
     behavior: "replace"
     files:
       - "configs/openstack/clouds.yaml.hcl"
+  - name: vault-backup-config
+    files:
+      - "configs/zuul.conf.hcl"
+      - "configs/openstack/clouds-backup.yaml.hcl"
   # Vault configs
   - name: vault-config-zuul
     files:

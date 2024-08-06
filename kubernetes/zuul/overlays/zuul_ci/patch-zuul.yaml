@@ -138,5 +138,3 @@ spec:
         - name: "db-secrets"
           secret:
             secretName: "zuul-db-app"
-
-

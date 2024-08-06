@@ -18,8 +18,8 @@ labels:
 
 images:
   - name: "zookeeper"
-    newName: "quay.io/opentelekomcloud/zookeeper"
-    newTag: "3.8.1"
+    #newName: "quay.io/opentelekomcloud/zookeeper"
+    newTag: "3.9.2@sha256:b34b773e67cf5139de0688f3e0caf2d0316db763d5dde8b8ee6af0bbd91c720c"
 
 resources:
   - cert.yaml

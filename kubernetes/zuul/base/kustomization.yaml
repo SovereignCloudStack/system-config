@@ -20,8 +20,8 @@ configMapGenerator:
 
 images:
   - name: "git-sync"
-    newName: "gcr.io/k8s-staging-git-sync/git-sync"
-    newTag: "v4.2.3"
+    newName: "registry.k8s.io/git-sync/git-sync"
+    newTag: "v4.2.4@sha256:827729ef28026c3aa73aecde6d1757a2e6967996cc64de43b39cf101ac28a9d1"
 
 labels:
   - includeSelectors: true

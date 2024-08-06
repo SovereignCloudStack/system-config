@@ -28,21 +28,15 @@ listener "unix" {
 }
 
 template {
-  destination = "/vault/secrets/connections/github.key"
-  contents = <<EOT
-{{- with secret "secret/zuul/connections/github" }}{{ .Data.data.app_key }}{{ end }}
-EOT
-  perms = "0600"
-}
-template {
   destination = "/vault/secrets/zuul.conf"
   source = "/vault/custom/zuul.conf.hcl"
   perms = "0644"
 }
+
 template {
-  destination = "/vault/secrets/sshkey"
-  contents = <<EOT
-{{- with secret "secret/zuul/sshkey" }}{{ .Data.data.private_key }}{{ end }}
-EOT
-  perms = "0600"
+  destination = "/vault/secrets/openstack/clouds.yaml"
+  source = "/vault/custom/clouds-backup.yaml.hcl"
+  perms = "0640"
 }
+
+
