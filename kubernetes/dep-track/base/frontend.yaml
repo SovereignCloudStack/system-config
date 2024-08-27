@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dependencytrack-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: dependencytrack-frontend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: dependencytrack-frontend
+    spec:
+      terminationGracePeriodSeconds: 10
+      serviceAccount: dependency-track
+      containers:
+        - name: frontend
+          image: dependencytrack/frontend
+          envFrom:
+            - configMapRef:
+                name: dependencytrack-config
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            readOnlyRootFilesystem: false # RO filesystems are not supported by the frontend
+            seccompProfile:
+              type: RuntimeDefault
+
+          ports:
+          - name: web
+            containerPort: 8080
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 150m
+              memory: 64Mi
+
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              port: web
+              path: /
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              port: web
+              path: /
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 5
+
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+
+
+      volumes:
+        - name: dependencytrack-config
+          configMap:
+            defaultMode: 420
+            name: dependencytrack-config
+        - name: tmp
+          emptyDir: { }

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dependencytrack-api
+spec:
+  template:
+    spec:
+      containers:
+        - name: api
+          env:
+            - name: "ALPINE_DATABASE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: "dependency-track-db-app"
+                  key: "jdbc-uri"
+
+            - name: "ALPINE_DATABASE_DRIVER"
+              value: "org.postgresql.Driver"
+
+            - name: "ALPINE_DATABASE_MODE"
+              value: "external"
+
+            - name: "ALPINE_DATABASE_USERNAME"
+              value: "app"
+
+            - name: "ALPINE_DATABASE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "dependency-track-db-app"
+                  key: "password"
+
