@@ -22,3 +22,11 @@ clouds:
        application_credential_id: "{{ .Data.data.application_credential_id }}"
        application_credential_secret: "{{ .Data.data.application_credential_secret }}"
 {{- end }}
+  gx-scs2:
+    auth_type: v3applicationcredential
+    auth:
+{{- with secret "secret/clouds/gx_scs2_nodepool_pool1" }}
+       auth_url: "{{ .Data.data.auth_url }}"
+       application_credential_id: "{{ .Data.data.application_credential_id }}"
+       application_credential_secret: "{{ .Data.data.application_credential_secret }}"
+{{- end }}
