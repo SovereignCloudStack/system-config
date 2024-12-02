@@ -49,27 +49,27 @@ images:
 
   - name: "zuul/zuul-executor"
     newName: "quay.io/zuul-ci/zuul-executor"
-    newTag: "11.0.0"
+    newTag: "11.1.0"
 
   - name: "zuul/zuul-merger"
     newName: "quay.io/zuul-ci/zuul-merger"
-    newTag: "11.0.0"
+    newTag: "11.1.0"
 
   - name: "zuul/zuul-scheduler"
     newName: "quay.io/zuul-ci/zuul-scheduler"
-    newTag: "11.0.0"
+    newTag: "11.1.0"
 
   - name: "zuul/zuul-web"
     newName: "quay.io/zuul-ci/zuul-web"
-    newTag: "11.0.0"
+    newTag: "11.1.0"
 
   - name: "zuul/nodepool-builder"
     newName: "quay.io/zuul-ci/nodepool-builder"
-    newTag: "10.0.0"
+    newTag: "11.0.0"
 
   - name: "zuul/nodepool-launcher"
     newName: "quay.io/zuul-ci/nodepool-launcher"
-    newTag: "10.0.0"
+    newTag: "11.0.0"
 
 
 patches:
