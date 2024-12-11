@@ -12,7 +12,7 @@ labels:
 helmCharts:
   - name: defectdojo
     repo: "https://raw.githubusercontent.com/DefectDojo/django-DefectDojo/helm-charts"
-    version: "1.6.144"
+    version: "1.6.161"
     releasename: "main"
     namespace: "defectdojo"
     valuesFile: "helm-values.yaml"
@@ -33,7 +33,7 @@ patches:
   - patch: |-
       - op: replace
         path: /metadata/name
-        value: initializer-v1-6-144
+        value: initializer-v1-6-161
     target:
       kind: Job
       group: batch

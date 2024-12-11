@@ -6,6 +6,24 @@
 # DNS entries for verification are being added, certs are
 # verified and finally the text records are being deleted.
 #
+# The process consists of 4 steps every one represented by the individual roles
+#
+# 1. Request certificates. This step is performed on every host requiring the
+#    certificate. In this step a private key for the requested certificate is
+#    created (if missing), a CSR is created and necessary DNS TXT records are
+#    being constructed for the next step.
+#
+# 2. Install DNS records. This step is performed on the controller host and it
+#    installs DNS TXT records required for the ACME verification to proceed. It
+#    uses OpenStack `clouds.yaml` to add DNS records in the DNS service
+#
+# 3. Verify and issue certificates. This step is again performed on hosts
+#    requiring the certificate. A DNS based verification is being triggered and
+#    once successful new certificate is being issued (renewed).
+#
+# 4. DNS cleanup. In this step (performed on the controller host) DNS TXT
+#    records are being removed.
+#
 - name: "Create necessary certificate requests"
   hosts: ssl_certs:!disabled
   become: true

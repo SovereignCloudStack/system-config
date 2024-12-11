@@ -21,4 +21,3 @@ os_specific_change_events:
   # Network configuration change
   - "-w /etc/sysconfig/network -p wa -k system-locale"
   - "-w /etc/sysconfig/network-scripts/ -p wa -k system-locale"
-

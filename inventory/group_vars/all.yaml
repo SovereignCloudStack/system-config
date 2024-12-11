@@ -45,9 +45,16 @@ all_users:
     gid: 2000
     key: |
       ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFnK86rxwHDN2B/QZOs0RNhlO4LLHjjpkF3l+QsgvfiS gtema@tuxedo
+  garloff:
+    comment: Kurt Garloff
+    uid: 2001
+    gid: 2001
+    key: |
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDPg6LFIp2yjJUON5ecUyDmDVIVk14+Pq14dvSFPSmaakhWYa1XftnoE1yd5NZMOfubestgppV328rbeXbSml9X5/b/qrai4DS2q85kh2nF684Nmm58x6AFdHPMP4dB1xuZZoAsQiaz6c6R31ZkmliXfI6+VzGeRr7W+YTzHwuH5HQVIYiTErco4w8teaDJCLliX2DniljpSs/AZc3Gb9JYfgbci5MrTyzVrQem4ckWaiDBJJcTtxgE4N2Tf8ZSH10X1EaJ6kyy3KtKUVa+23co6wmNsXhYMY1r2A/cjkD8qf2p8ece0sBg+qlqVPtzy7joS8yWqgHHlIM3ECu5PaxjVi15stoq5cnlLPEbEinpLu0jhOpyzUFLS5Yx/E88rGSI7HYeN/WjBgl/GgvBFzJygOvwnGeESiEh7DnLApeQAVcAzRMLCxMNQ4ZdhiJNcaHwv64puxVpfTwNzwIhGzy0zne40iCA7Wg3S2F6TJypdI6n4G8DLFpt0hNjusEa+rcKO5hIXqZ3yo4dYCFOuiSnBrzZslGfrcGeO9nyIcwrdCw0voCUwhD++0N1qJolBr6lLhnzfwDaLMGAqmMzntc5aRVEoxhJboftuuzeoyboy/toIfhPMzY50D5JYXaG0Szi9VHo4wI6ehDaoAkrT7cpNC6UaoFBQMHG7cPR47LiUQ==
 
 base_users:
   - gtema
+  - garloff
 
 disabled_distro_cloud_users:
   - debian
