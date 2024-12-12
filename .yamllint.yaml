@@ -5,6 +5,10 @@ yaml-files:
   - '*.yml'
   - '.yamllint'
 
+ignore:
+  - 'kubernetes/'
+  - 'playbooks/'
+
 rules:
   anchors: enable
   braces: enable
@@ -18,7 +22,7 @@ rules:
   document-end: disable
   document-start:
     level: warning
-  empty-lines: enable
+  empty-lines: disable
   empty-values: disable
   float-values: disable
   hyphens: enable

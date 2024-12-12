@@ -1,3 +1,6 @@
+# Install and configure Vault (OpenBAO) on hosts
+#
+#
 - hosts: "vault:!disabled"
   become: true
   name: "Vault: configure vault instances"

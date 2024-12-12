@@ -55,9 +55,9 @@ is not working smoothly on every installation
   kustomization.yaml there is a link to zuul-config repository which must
   contain `nodepool/nodepool.yaml` - nodepool config and `zuul/main.yaml` -
   tenants info.  This link is given by `zuul_instance_config` configmap with
-  ZUUL_CONFIG_REPO=https://gitea.eco.tsi-dev.otc-service.com/scs/zuul-config.git
+  ZUUL_CONFIG_REPO=https://github.com/SovereignCloudStack/zuul-config.git
 
-- `zuul_ci` - zuul.otc-service.com installation
+- `zuul_ci` - zuul.sovereignit.cloud installation
 
 ## Versions
 
@@ -70,3 +70,60 @@ and it is expected that every overlay is setting desired version.
 Proper overlays are also relying on HashiCorp Vault for providing installation
 secrets. Vault agent version is controlled i.e. in the overlay itself with
 variable pointing to the vault installation in the overlay patch.
+
+## Vault
+
+This application (overlay) is designed to fetch all necessary data from Vault
+using [vault-agent](https://openbao.org/docs/agent-and-proxy/agent/). For this
+a series of vault-agent configs are created as Kubernetes ConfigMaps. Every
+Zuul component pod is provisioned with a vault-agent sidecar (typically 2: init
+container to render initial configuration and run container to keep
+configuration synchronized).
+
+Depending on the component and patching style Vault address may be passed on the patch itself as an environment variable to the vault-agent pods. In addition to that Zuul itself may need to know location of Vault to be able to use it for dynamic credentials lookup by jobs (overlays/configs/site-vars.yaml).
+
+Every vault-agent config file contain Vault connection information
+
+```
+    "method" = {
+        "mount_path" = "auth/kubernetes_wavestack_zuul"
+        "config" = {
+          "role" = "zuul"
+        }
+        "type" = "kubernetes"
+```
+
+This requires a Kubernetes Auth to be registered in the Vault with the name
+`kubernetes_wavestack_zuul` and a role `zuul` providing read access to
+necessary secrets.
+
+### Jobs accessing Vault
+
+It is possible to configure Zuul jobs to fetch necessary secrets from Vault
+directly instead of relying on the default Zuul mechanism storing encrypted
+secrets in git repository. This gives much better control over secrets, ease
+rotation and provide access audit.
+
+A base vault token (`zuul-base` K8 role) is being provisioned by vault-agent into the zuul-executor trusted-ro path making it accessible to the [Zuul base job](https://github.com/SovereignCloudStack/zuul-scs-jobs/blob/main/playbooks/base/pre.yaml). This job is using it in few ways:
+
+- directly [fetch logs cloud access credentials](https://github.com/SovereignCloudStack/zuul-scs-jobs/blob/main/playbooks/base/post-logs.yaml#L9) to upload job logs
+- issue a one-time [sealed approle
+  access](https://openbao.org/docs/auth/approle/) for jobs running in the
+  post-review pipeline and having vault_role_id job variable defined pointing to
+  the existing AppRole with the name matching the project name constructed in the
+  following way: "zuul/<TENANT_NAME>/<REPOSITORY_NAME>" ([example
+  job](https://github.com/SovereignCloudStack/zuul-scs-jobs/blob/main/playbooks/container-image/upload.yaml)).
+  The job is capable to unseal the one-time secret using the base token.
+
+## Configuration repositories
+
+There 2 basic git repositories used by Zuul:
+
+- [Zuul config](https://github.com/SovereignCloudStack/zuul-config/)
+
+  This repository is defining zuul deployment configuration (nodepool config,
+  zuul tenant config)
+
+- [Jobs](https://github.com/SovereignCloudStack/zuul-scs-jobs/)
+
+  This repository defines SCS tenant configuration (jobs)
