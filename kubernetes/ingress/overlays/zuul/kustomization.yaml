@@ -4,7 +4,7 @@ kind: Kustomization
 
 # all.yaml generated with `helm  template  ingress-nginx-mgmt ingress-nginx
 # --repo https://kubernetes.github.io/ingress-nginx   --namespace ingress-nginx
-# --create-namespace --kube-version 1.30 >
+# --create-namespace --kube-version 1.34 >
 # kubernetes/ingress/overlays/mgmt/all.yaml`
 resources:
   - namespace.yaml
