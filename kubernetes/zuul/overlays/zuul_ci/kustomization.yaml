@@ -38,38 +38,38 @@ images:
 
   - name: "git-sync"
     newName: "registry.k8s.io/git-sync/git-sync"
-    newTag: "v4.2.4@sha256:827729ef28026c3aa73aecde6d1757a2e6967996cc64de43b39cf101ac28a9d1"
+    newTag: "v4.6.0@sha256:228a26d5f55ac5ae9c51635812570ba0073e0b1e0bd8fc3a653a0523b918c092"
 
   - name: "ghcr.io/gtema/openstack"
-    newTag: "0.6.4@sha256:1fcf0f6268dacd2b0934e7fe1395032d3abc4168895a6ebf9286657d64d6e1ae"
+    newTag: "sha-a6f68b5@sha256-222b82f765e29c7ff1f9c2f7b0c731ee02ad9e5fcb3b1185cc845af3207296d2"
 
   - name: "hashicorp/vault"
     newName: "quay.io/openbao/openbao"
-    newTag: "2.0.0@sha256:5eedbca9922d85eca5e4bc68c11f968d245b4046641dd4173c1dcff7ae7091aa"
+    newTag: "2.5.3@sha256:fdc6da21ca6963560c32336fd7feb9cf2d5e52668f1a1647205a4b41171f0806"
 
   - name: "zuul/zuul-executor"
     newName: "quay.io/zuul-ci/zuul-executor"
-    newTag: "11.2.0"
+    newTag: "14.2.0"
 
   - name: "zuul/zuul-merger"
     newName: "quay.io/zuul-ci/zuul-merger"
-    newTag: "11.2.0"
+    newTag: "14.2.0"
 
   - name: "zuul/zuul-scheduler"
     newName: "quay.io/zuul-ci/zuul-scheduler"
-    newTag: "11.2.0"
+    newTag: "14.2.0"
 
   - name: "zuul/zuul-web"
     newName: "quay.io/zuul-ci/zuul-web"
-    newTag: "11.2.0"
+    newTag: "14.2.0"
 
   - name: "zuul/nodepool-builder"
     newName: "quay.io/zuul-ci/nodepool-builder"
-    newTag: "11.0.0"
+    newTag: "14.2.0"
 
   - name: "zuul/nodepool-launcher"
     newName: "quay.io/zuul-ci/nodepool-launcher"
-    newTag: "11.0.0"
+    newTag: "14.2.0"
 
 
 patches:
