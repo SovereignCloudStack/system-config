@@ -6,7 +6,7 @@ pid_file = "/home/vault/.pid"
         "config" = {
           # Here we explicitly request zuul-base role which gives access to
           # only certain policies
-          "role" = "zuul-base"
+          "role" = "zuul-noris-base"
         }
         "type" = "kubernetes"
       }

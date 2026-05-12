@@ -3,7 +3,7 @@ pid_file = "/home/vault/.pid"
     "method" = {
         "mount_path" = "auth/kubernetes_noris_zuul"
         "config" = {
-          "role" = "zuul"
+          "role" = "zuul-noris"
         }
         "type" = "kubernetes"
       }
