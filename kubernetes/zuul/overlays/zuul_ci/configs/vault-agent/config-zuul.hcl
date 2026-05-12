@@ -30,7 +30,7 @@ listener "unix" {
 template {
   destination = "/vault/secrets/connections/github.key"
   contents = <<EOT
-{{- with secret "secret/zuul/connections/github" }}{{ .Data.data.app_key }}{{ end }}
+{{- with secret "secret/zuul/connections/github2" }}{{ .Data.data.app_key }}{{ end }}
 EOT
   perms = "0600"
 }
