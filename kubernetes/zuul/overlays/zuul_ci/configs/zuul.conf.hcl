@@ -6,6 +6,7 @@ tls_ca=/tls/client/ca.crt
 session_timeout=40
 
 [scheduler]
+#tenant_config=/etc/zuul-config/current/zuul/main-light.yaml
 tenant_config=/etc/zuul-config/current/zuul/main.yaml
 state_dir=/var/lib/zuul
 relative_priority=true
