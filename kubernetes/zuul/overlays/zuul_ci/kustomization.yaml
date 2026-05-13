@@ -41,7 +41,7 @@ images:
     newTag: "v4.6.0@sha256:228a26d5f55ac5ae9c51635812570ba0073e0b1e0bd8fc3a653a0523b918c092"
 
   - name: "ghcr.io/gtema/openstack"
-    newTag: "sha-a6f68b5@sha256-222b82f765e29c7ff1f9c2f7b0c731ee02ad9e5fcb3b1185cc845af3207296d2"
+    newTag: "sha-a6f68b5@sha256:222b82f765e29c7ff1f9c2f7b0c731ee02ad9e5fcb3b1185cc845af3207296d2"
 
   - name: "hashicorp/vault"
     newName: "quay.io/openbao/openbao"
@@ -49,19 +49,19 @@ images:
 
   - name: "zuul/zuul-executor"
     newName: "quay.io/zuul-ci/zuul-executor"
-    newTag: "13.1.1"
+    newTag: "14.2.0"
 
   - name: "zuul/zuul-merger"
     newName: "quay.io/zuul-ci/zuul-merger"
-    newTag: "13.1.1"
+    newTag: "14.2.0"
 
   - name: "zuul/zuul-scheduler"
     newName: "quay.io/zuul-ci/zuul-scheduler"
-    newTag: "13.1.1"
+    newTag: "14.2.0"
 
   - name: "zuul/zuul-web"
     newName: "quay.io/zuul-ci/zuul-web"
-    newTag: "13.1.1"
+    newTag: "14.2.0"
 
   - name: "zuul/nodepool-builder"
     newName: "quay.io/zuul-ci/nodepool-builder"
