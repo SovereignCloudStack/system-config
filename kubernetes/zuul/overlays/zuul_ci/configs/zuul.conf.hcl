@@ -6,6 +6,7 @@ tls_ca=/tls/client/ca.crt
 session_timeout=40
 
 [scheduler]
+#tenant_config=/etc/zuul-config/current/zuul/main-light.yaml
 tenant_config=/etc/zuul-config/current/zuul/main.yaml
 state_dir=/var/lib/zuul
 relative_priority=true
@@ -50,7 +51,7 @@ dburi=postgresql://{{ file "/vault/db-secrets/user" }}:{{ file "/vault/db-secret
 [connection "github"]
 name=github
 driver=github
-{{- with secret "secret/zuul/connections/github" }}
+{{- with secret "secret/zuul/connections/github2" }}
 webhook_token={{ .Data.data.webhook_token }}
 app_id={{ .Data.data.app_id }}
 {{- end }}

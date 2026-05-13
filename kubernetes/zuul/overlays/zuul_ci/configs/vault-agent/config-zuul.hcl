@@ -1,9 +1,9 @@
 pid_file = "/home/vault/.pid"
 "auto_auth" = {
     "method" = {
-        "mount_path" = "auth/kubernetes_wavestack_zuul"
+        "mount_path" = "auth/kubernetes_noris_zuul"
         "config" = {
-          "role" = "zuul"
+          "role" = "zuul-noris"
         }
         "type" = "kubernetes"
       }
@@ -30,7 +30,7 @@ listener "unix" {
 template {
   destination = "/vault/secrets/connections/github.key"
   contents = <<EOT
-{{- with secret "secret/zuul/connections/github" }}{{ .Data.data.app_key }}{{ end }}
+{{- with secret "secret/zuul/connections/github2" }}{{ .Data.data.app_key }}{{ end }}
 EOT
   perms = "0600"
 }

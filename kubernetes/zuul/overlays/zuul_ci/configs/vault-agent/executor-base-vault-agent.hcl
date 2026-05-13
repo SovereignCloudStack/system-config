@@ -2,11 +2,11 @@ pid_file = "/home/vault/.pid"
 
 "auto_auth" = {
     "method" = {
-        "mount_path" = "auth/kubernetes_wavestack_zuul"
+        "mount_path" = "auth/kubernetes_noris_zuul"
         "config" = {
           # Here we explicitly request zuul-base role which gives access to
           # only certain policies
-          "role" = "zuul-base"
+          "role" = "zuul-noris-base"
         }
         "type" = "kubernetes"
       }
