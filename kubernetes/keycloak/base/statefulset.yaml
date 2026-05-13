@@ -131,7 +131,7 @@ spec:
 
       initContainers:
         - name: init-quarkus-directory
-          image: keycloak/keycloak:24.0.3
+          image: keycloak/keycloak:26.6.1
           imagePullPolicy: IfNotPresent
           command:
             - /bin/bash
