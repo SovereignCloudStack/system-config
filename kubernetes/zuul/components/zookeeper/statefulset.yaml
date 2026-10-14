@@ -133,7 +133,7 @@ spec:
             secretName: zookeeper-server-tls
         - name: zookeeper-client-tls
           secret:
-            secretName: zookeeper-server-tls
+            secretName: zookeeper-client-tls
 
   updateStrategy:
     type: "RollingUpdate"
