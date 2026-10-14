@@ -1,0 +1,55 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: zuul-ci
+
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/instance: zuul-ci
+
+images:
+  - name: "busybox"
+    newName: "quay.io/prometheus/busybox"
+    newTag: "latest"
+
+  - name: "git-sync"
+    newName: "registry.k8s.io/git-sync/git-sync"
+    newTag: "v4.6.0@sha256:228a26d5f55ac5ae9c51635812570ba0073e0b1e0bd8fc3a653a0523b918c092"
+
+  - name: "ghcr.io/gtema/openstack"
+    newTag: "sha-a6f68b5@sha256-222b82f765e29c7ff1f9c2f7b0c731ee02ad9e5fcb3b1185cc845af3207296d2"
+
+  - name: "hashicorp/vault"
+    newName: "quay.io/openbao/openbao"
+    newTag: "2.5.3@sha256:fdc6da21ca6963560c32336fd7feb9cf2d5e52668f1a1647205a4b41171f0806"
+
+  - name: "zuul/zuul-executor"
+    newName: "quay.io/zuul-ci/zuul-executor"
+    newTag: "14.2.0"
+
+  - name: "zuul/zuul-merger"
+    newName: "quay.io/zuul-ci/zuul-merger"
+    newTag: "14.2.0"
+
+  - name: "zuul/zuul-scheduler"
+    newName: "quay.io/zuul-ci/zuul-scheduler"
+    newTag: "14.2.0"
+
+  - name: "zuul/zuul-web"
+    newName: "quay.io/zuul-ci/zuul-web"
+    newTag: "14.2.0"
+
+  - name: "zuul/nodepool-builder"
+    newName: "quay.io/zuul-ci/nodepool-builder"
+    newTag: "14.2.0"
+
+  - name: "zuul/nodepool-launcher"
+    newName: "quay.io/zuul-ci/nodepool-launcher"
+    newTag: "14.2.0"
+
+
+resources:
+  - pgsql-cloudnative.yaml
+
