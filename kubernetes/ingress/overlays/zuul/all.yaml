@@ -6,7 +6,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -22,7 +22,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -38,7 +38,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -122,7 +122,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -143,7 +143,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -237,7 +237,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -260,7 +260,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -287,7 +287,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -322,7 +322,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -343,7 +343,7 @@ spec:
       labels:
         helm.sh/chart: ingress-nginx-4.15.1
         app.kubernetes.io/name: ingress-nginx
-        app.kubernetes.io/instance: ingress-nginx-mgmt
+        app.kubernetes.io/instance: ingress-nginx-zuul
         app.kubernetes.io/version: "1.15.1"
         app.kubernetes.io/part-of: ingress-nginx
         app.kubernetes.io/managed-by: Helm
@@ -433,7 +433,7 @@ spec:
               memory: 90Mi
       nodeSelector:
         kubernetes.io/os: linux
-      serviceAccountName: ingress-nginx-mgmt
+      serviceAccountName: ingress-nginx-zuul
       automountServiceAccountToken: true
       terminationGracePeriodSeconds: 300
       volumes:
@@ -448,7 +448,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -471,7 +471,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -513,7 +513,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -531,7 +531,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -556,7 +556,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -582,7 +582,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -608,7 +608,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -634,7 +634,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -647,7 +647,7 @@ spec:
       labels:
         helm.sh/chart: ingress-nginx-4.15.1
         app.kubernetes.io/name: ingress-nginx
-        app.kubernetes.io/instance: ingress-nginx-mgmt
+        app.kubernetes.io/instance: ingress-nginx-zuul
         app.kubernetes.io/version: "1.15.1"
         app.kubernetes.io/part-of: ingress-nginx
         app.kubernetes.io/managed-by: Helm
@@ -679,7 +679,7 @@ spec:
             seccompProfile:
               type: RuntimeDefault
       restartPolicy: OnFailure
-      serviceAccountName: ingress-nginx-mgmt-admission
+      serviceAccountName: ingress-nginx-zuul-admission
       automountServiceAccountToken: true
       nodeSelector:
         kubernetes.io/os: linux
@@ -696,7 +696,7 @@ metadata:
   labels:
     helm.sh/chart: ingress-nginx-4.15.1
     app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx-mgmt
+    app.kubernetes.io/instance: ingress-nginx-zuul
     app.kubernetes.io/version: "1.15.1"
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/managed-by: Helm
@@ -709,7 +709,7 @@ spec:
       labels:
         helm.sh/chart: ingress-nginx-4.15.1
         app.kubernetes.io/name: ingress-nginx
-        app.kubernetes.io/instance: ingress-nginx-mgmt
+        app.kubernetes.io/instance: ingress-nginx-zuul
         app.kubernetes.io/version: "1.15.1"
         app.kubernetes.io/part-of: ingress-nginx
         app.kubernetes.io/managed-by: Helm
@@ -743,7 +743,7 @@ spec:
             seccompProfile:
               type: RuntimeDefault
       restartPolicy: OnFailure
-      serviceAccountName: ingress-nginx-mgmt-admission
+      serviceAccountName: ingress-nginx-zuul-admission
       automountServiceAccountToken: true
       nodeSelector:
         kubernetes.io/os: linux
