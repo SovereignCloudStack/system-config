@@ -74,7 +74,7 @@ spec:
               memory: "2048Mi"
             requests:
               cpu: "300m"
-              memory: "1024Mi"
+              memory: "256Mi"
 
           securityContext:
             privileged: true
