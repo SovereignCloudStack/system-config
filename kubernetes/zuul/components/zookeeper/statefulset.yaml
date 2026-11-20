@@ -109,7 +109,7 @@ spec:
               memory: "2Gi"
             requests:
               cpu: "20m"
-              memory: "1584Mi"
+              memory: "1Gi"
 
           volumeMounts:
             - name: data
@@ -133,7 +133,7 @@ spec:
             secretName: zookeeper-server-tls
         - name: zookeeper-client-tls
           secret:
-            secretName: zookeeper-server-tls
+            secretName: zookeeper-client-tls
 
   updateStrategy:
     type: "RollingUpdate"
