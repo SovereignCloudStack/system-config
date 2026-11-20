@@ -1,9 +1,9 @@
 pid_file = "/home/vault/.pid"
 "auto_auth" = {
     "method" = {
-        "mount_path" = "auth/kubernetes_wavestack_zuul"
+        "mount_path" = "auth/kubernetes_noris_zuul"
         "config" = {
-          "role" = "zuul"
+          "role" = "zuul-noris"
         }
         "type" = "kubernetes"
       }
