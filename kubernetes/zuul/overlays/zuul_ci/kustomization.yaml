@@ -65,11 +65,11 @@ images:
 
   - name: "zuul/nodepool-builder"
     newName: "quay.io/zuul-ci/nodepool-builder"
-    newTag: "11.0.0"
+    newTag: "14.2.0"
 
   - name: "zuul/nodepool-launcher"
     newName: "quay.io/zuul-ci/nodepool-launcher"
-    newTag: "11.0.0"
+    newTag: "14.2.0"
 
 
 patches:
