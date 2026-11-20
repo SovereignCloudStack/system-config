@@ -2,10 +2,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-# all.yaml generated with `helm  template  ingress-nginx-mgmt ingress-nginx
+# all.yaml generated with `helm  template  ingress-nginx-zuul ingress-nginx
 # --repo https://kubernetes.github.io/ingress-nginx   --namespace ingress-nginx
 # --create-namespace --kube-version 1.34 >
-# kubernetes/ingress/overlays/mgmt/all.yaml`
+# kubernetes/ingress/overlays/zuul/all.yaml`
 resources:
   - namespace.yaml
   - all.yaml
