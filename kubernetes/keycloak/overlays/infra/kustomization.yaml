@@ -12,7 +12,7 @@ labels:
 images:
   - name: keycloak/keycloak
     newName: quay.io/keycloak/keycloak
-    newTag: 26.6.1
+    newTag: 26.8.2
 
 resources:
   - pgsql-cloudnative.yaml
